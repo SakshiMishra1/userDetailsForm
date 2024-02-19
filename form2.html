@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Appliance</title>
+    <style>
+        /* Body styling */
+        body {
+            background: #fff;
+            color: #fff;
+            font-family: Verdana;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            min-height: 100vh; /* Minimum height to fill viewport */
+        }
+        /* Form styling */
+        form {
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 200px; /* Width of the form */
+            height: 480px; /* Height of the form */
+            margin: 20px; /* Margin around the form */
+            padding: 30px 20px; /* Padding inside the form */
+            box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            align-self: flex-start;
+        }
+        /* Form control styling */
+        .form-control {
+            margin-bottom: 25px;
+        }
+        /* Label styling */
+        .form-control label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        /* Input styling */
+        .form-control input,
+        .form-control select,
+        .form-control textarea {
+            border: 1px solid #000;
+            border-radius: 2px;
+            font-family: inherit;
+            padding: 10px; /* Padding inside input fields */
+            display: block;
+            width: calc(100% - 20px); /* Full width input fields with adjusted padding */
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #333;
+            font-size: 13px;
+        }
+        /* Button styling */
+        button {
+            background-color: #ce360b;
+            border: 1px solid #ce360b;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 18px;
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #142651;
+        }
+    </style>
+</head>
+<body>
+    <!-- Form -->
+    <form id="form">
+        <!-- Appliance Issue -->
+        <div class="form-control">
+            <label for="appliance-issue">Appliance Issue</label>
+            <textarea id="appliance-issue" name="appliance-issue" placeholder="Enter appliance issue"></textarea>
+        </div>
+        <!-- Brand -->
+        <div class="form-control">
+            <label for="brand">Brand</label>
+            <select id="brand" name="brand">
+                <option value="Samsung">Samsung</option>
+                <option value="General Electric">General Electric</option>
+                <option value="LG Appliance">LG Appliance</option>
+                <option value="Whirlpool">Whirlpool</option>
+            </select>
+        </div>
+        <!-- Service Details -->
+        <div class="form-control">
+            <label for="service-details">Service Details</label>
+            <textarea id="service-details" name="service-details" placeholder="Enter service details"></textarea>
+        </div>
+        <!-- Warranty -->
+        <div class="form-control">
+            <label for="warranty">Is your appliance covered under warranty?</label>
+            <select id="warranty" name="warranty">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <!-- Submit Button -->
+        <button type="button" id="submit-btn">Submit</button>
+    </form>
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("#submit-btn").click(function () {
+                // Retrieve form data
+                var applianceIssue = $("#appliance-issue").val();
+                var brand = $("#brand").val();
+                var serviceDetails = $("#service-details").val();
+                var warranty = $("#warranty").val();
+                // Send form data via postMessage
+                window.parent.postMessage(JSON.stringify({
+                    event_code: 'ym-client-event',
+                    data: JSON.stringify({
+                        event: {
+                            code: "userdetails",
+                            data: {
+                                applianceIssue: applianceIssue,
+                                brand: brand,
+                                serviceDetails: serviceDetails,
+                                warranty: warranty
+                            }
+                        }
+                    })
+                }), '*');
+                // Fade out the form and append thank you message
+                $(this).fadeOut("slow", function () {
+                    var message = "<div class='submission-message'>Thank you for your submission!</div>";
+                    $(this).parent().append(message);
+                    $('.submission-message').css({
+                        'color': 'black',
+                        'text-align': 'center',
+                        'margin-top': '20px' // Adjust as needed
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
