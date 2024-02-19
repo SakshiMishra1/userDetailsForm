@@ -8,7 +8,7 @@
     <style>
         /* Body styling */
         body {
-            background: linear-gradient(to right, #ce360b, #142651);
+            background: #fff;
             color: #fff;
             font-family: Verdana;
             text-align: left;
@@ -92,7 +92,7 @@
         <!-- Phone Number -->
         <div class="form-control">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" />
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone no." />
         </div>
         <!-- Submit Button -->
         <button type="button" id="submit-btn">Submit</button>
@@ -121,8 +121,14 @@
                     })
                 }), '*');
                 // Fade out the form and append thank you message
-                $("form").fadeOut("slow", function () {
-                    $(this).parent().append("<div>Thank you for your submission!</div>");
+                $(this).fadeOut("slow", function () {
+                    var message = "<div class='submission-message'>Thank you for your submission!</div>";
+                    $(this).parent().append(message);
+                    $('.submission-message').css({
+                        'color': 'black',
+                        'text-align': 'center',
+                        'margin-top': '20px' // Adjust as needed
+                    });
                 });
             });
         });
