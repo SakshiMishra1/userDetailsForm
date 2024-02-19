@@ -1,135 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mr Appliance</title>
-
     <style>
-        /* Styling the Body element 
-        i.e. Color, Font, Alignment */
+        /* Body styling */
         body {
             background: linear-gradient(to right, #ce360b, #142651);
-            color: #fff; /* Change text color to white */
+            color: #fff;
             font-family: Verdana;
-            text-align: left; /* Align text to the left */
+            text-align: left;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            min-height: 100vh; /* Minimum height to fill viewport */
         }
-
-        /* Styling the Form (Color, Padding, Shadow) */
+        /* Form styling */
         form {
             background-color: rgba(255, 255, 255, 0.8);
-            width: 200px; /* Adjusted form width */
-            margin: 50px 20px; /* Adjusted margin */
-            padding: 30px 20px;
+            width: 200px; /* Width of the form */
+            height: 300px; /* Height of the form */
+            margin: 20px; /* Margin around the form */
+            padding: 30px 20px; /* Padding inside the form */
             box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
             border-radius: 10px;
+            align-self: flex-start;
         }
-
-        /* Styling form-control Class */
+        /* Form control styling */
         .form-control {
             text-align: left;
             margin-bottom: 25px;
         }
-
-        /* Styling form-control Label */
+        /* Label styling */
         .form-control label {
             display: block;
             margin-bottom: 10px;
-            color: #333; /* Change label color */
+            color: #333;
         }
-
-        /* Styling form-control input, 
-        select, textarea */
+        /* Input styling */
         .form-control input,
         .form-control select,
         .form-control textarea {
             border: 1px solid #000;
             border-radius: 2px;
             font-family: inherit;
-            padding: 8px; /* Adjusted padding */
+            padding: 10px; /* Padding inside input fields */
             display: block;
-            width: 90%; /* Full width input */
+            width: calc(100% - 20px); /* Full width input fields with adjusted padding */
             background-color: rgba(255, 255, 255, 0.5);
             color: #333;
-            font-size: 14px; /* Adjusted font size */
+            font-size: 13px;
         }
-
-        /* Styling Button */
+        /* Button styling */
         button {
             background-color: #ce360b;
             border: 1px solid #ce360b;
             border-radius: 5px;
             font-family: inherit;
-            font-size: 18px; /* Adjusted font size */
+            font-size: 18px;
             display: block;
             width: 100%;
-            margin-top: 30px; /* Adjusted margin */
+            margin-top: 30px;
             margin-bottom: 20px;
-            color: #fff; /* Change button text color to white */
-            padding: 10px 20px; /* Adjusted padding */
+            color: #fff;
+            padding: 10px 20px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
         button:hover {
             background-color: #142651;
         }
     </style>
 </head>
-
 <body>
-    <!-- Create Form -->
+    <!-- Form -->
     <form id="form">
-        <!-- Details -->
+        <!-- First Name -->
         <div class="form-control">
-            <label for="first-name">
-                First Name
-            </label>
-            <!-- Input Type Text -->
+            <label for="first-name">First Name</label>
             <input type="text" id="first-name" name="first-name" placeholder="Enter your first name" />
         </div>
+        <!-- Last Name -->
         <div class="form-control">
-            <label for="last-name">
-                Last Name
-            </label>
-            <!-- Input Type Text -->
+            <label for="last-name">Last Name</label>
             <input type="text" id="last-name" name="last-name" placeholder="Enter your last name" />
         </div>
-
+        <!-- Phone Number -->
         <div class="form-control">
-            <label for="phone">
-                Phone Number
-            </label>
-            <!-- Input Type Phone-->
+            <label for="phone">Phone Number</label>
             <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" />
         </div>
-
-        <!-- Multi-line Text Input Control -->
+        <!-- Submit Button -->
         <button type="button" id="submit-btn">Submit</button>
     </form>
-
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        document.getElementById('submit-btn').addEventListener('click', function() {
-            var firstName = document.getElementById("first-name").value;
-            var lastName = document.getElementById("last-name").value;
-            var phone = document.getElementById("phone").value;
-
-            var formData = {
-                "firstName": firstName,
-                "lastName": lastName,
-                "phone": phone
-            };
-
-            window.parent.postMessage(JSON.stringify({
-                event_code: 'ym-capture-details',
-                data: formData
-            }), '*');
+        $(function () {
+            $("#submit-btn").click(function () {
+                // Retrieve form data
+                var firstname = $("#first-name").val();
+                var lastname = $("#last-name").val();
+                var mobile = $("#phone").val();
+                // Send form data via postMessage
+                window.parent.postMessage(JSON.stringify({
+                    event_code: 'ym-client-event',
+                    data: JSON.stringify({
+                        event: {
+                            code: "userdetails",
+                            data: {
+                                firstname: $("#first-name").val(),
+                                lastname: $("#last-name").val(),
+                                phone: $("#phone").val()
+                            }
+                        }
+                    })
+                }), '*');
+                // Fade out the form and append thank you message
+                $("form").fadeOut("slow", function () {
+                    $(this).parent().append("<div>Thank you for your submission!</div>");
+                });
+            });
         });
     </script>
 </body>
-
 </html>
